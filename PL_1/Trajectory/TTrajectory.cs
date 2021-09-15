@@ -177,10 +177,10 @@ namespace StandartHelperLibrary.MathHelper
                 if (L2TR)
                 {
                     T[9] = T[9] + 1;
-                    P9(ref VN[17], ref VN, ref T, ref GEO, ref L1PR, ref LDATA);
+                    P9(VN[17]);
                     VN[23] = VN[19];
                     T[9] = T[9] - 1;
-                    P9(ref VN[17], ref VN, ref T, ref GEO, ref L1PR, ref LDATA);
+                    P9(VN[17]);
                     VN[24] = VN[23] - VN[19];
                     VN[25] = VN[12] * VN[19] / (1 + VN[12]);
                     if (Math.Abs(VN[25]) >= 1)
@@ -191,13 +191,12 @@ namespace StandartHelperLibrary.MathHelper
                 }
                 else if (L3TR)
                 {
-                    P9(ref VN[17], ref VN, ref T, ref GEO, ref L1PR, ref LDATA);
+                    P9(VN[17]);
                     T[1] = T[9];
                     T[2] = Math.Atan(VN[19] / Math.Sqrt(1 - Math.Pow(VN[19], 2)));
                     VN[24] = VN[19] / (1 - T[16]) * VN[18] / VN[32];
                     T[10] = T[2];
                 }
-
                 if (L2TR)
                     return (((1 + VN[12]) * VN[12] * VN[24] + VN[14] * VN[19]) / (Math.Pow((1 + VN[12]), 2) * Math.Cos(T[10])) - (1 + VN[12]) * (VN[20] + Math.Cos(T[10]) * (Math.Pow(T[9], 2) / (VN[1] * (VN[3] + T[11])) - 1)) / (T[9] * VN[19]));
                 else if (L3TR)
@@ -208,13 +207,12 @@ namespace StandartHelperLibrary.MathHelper
                     Console.ReadKey();
                     return 0;
                 }
-
             }
 
             double F1(double AL1)
             {
                 VN[27] = AL1;
-                P9(ref VN[27], ref VN, ref T, ref GEO, ref L1PR, ref LDATA);
+                P9(VN[27]);
                 if (VN[12] == 0)
                 {
                     if (H[1] > 0)
@@ -245,7 +243,7 @@ namespace StandartHelperLibrary.MathHelper
             {
 
                 VN[28] = AL2;
-                P9(ref VN[28], ref VN, ref T, ref GEO, ref L1PR, ref LDATA);
+                P9(VN[28]);
                 if (VN[12] == 0)
                 {
                     if (H[1] > 0)
@@ -270,12 +268,34 @@ namespace StandartHelperLibrary.MathHelper
                             return VN[19];
                     }
                 }
-
             }
 
-            void P9()
+            void P9(double AL)
             {
-
+                VN[30] = AL;
+                VN[10] = T[9] / VN[6];
+                double[] AER = TDeterminationLiftingCoefficient.СalculationLiftingForceCoefficient(GEO, T[11], VN[10], VN[30], L1PR);//вызов программы расчета аэродинамических характеристик
+                VN[21] = AER[3];
+                VN[22] = AER[8];
+                double[] AB4 = DU(GEO, T[11], VN[10], VN[30]);//вызов программы расчета характеристик силовой установки
+                VN[31] = AB4[4];
+                VN[32] = AB4[5];
+                if (LDATA)
+                    VN[28] = GEO[10] * VN[31];
+                else
+                    VN[18] = GEO[23] * VN[31];
+                VN[19] = (VN[18] * Math.Cos(VN[30]) - VN[22] * VN[9] * Math.Pow(T[9], 2) / 2 / GEO[9]) / (1 - T[16]);
+                VN[26] = (VN[18] * Math.Sin(VN[30]) + VN[21] * VN[11] * Math.Cos(VN[2]) / GEO[9]) / (1 - T[16]);
+                if (VN[19] > GEO[14])
+                    VN[18] = (GEO[14] * (1 - T[16]) + VN[22] * VN[9] * Math.Pow(T[9], 2) / 2 / GEO[9]) / Math.Cos(VN[30]);
+                if (GEO[10] == 0 || GEO[23] == 0)
+                    VN[33] = 0;
+                else
+                {
+                    if (LDATA)
+                        VN[33] = VN[18] / (GEO[10] * VN[31]);
+                    else VN[33] = VN[18] / (GEO[23] * VN[31]);
+                }
             }
             
             void P10()
