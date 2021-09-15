@@ -403,5 +403,28 @@ namespace StandartHelperLibrary.MathHelper
         M3SP1:
             LS1B1 = true;
         }
+
+        //--------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Расчет характеристик силовой установки
+        /// </summary>
+        /// <param name="GEO"></param>
+        /// <param name="A4"></param>
+        /// <param name="B4"></param>
+        /// <returns>Характеристики силовой установки</returns>
+        public static double[] DU(double[] GEO, double A4, double B4, double C4)
+        {
+            double[] AB4 = new double[10];
+            double[] BB4 = new double[10];
+            AB4[1] = A4;
+            AB4[2] = B4;
+            AB4[3] = C4;
+            double[] Atmosphere = HelperMethods.SP6B1(BB4[1], BB4[2], BB4[3], BB4[4], GEO[1]);
+            AB4[4] = (1 - (1 - 1 / GEO[23]) * Atmosphere[3]) * GEO[23];
+            AB4[5] = AB4[4] * GEO[20] / GEO[21];
+            return AB4;
+        }
+        //------------------------------------------------------------------------------------------------------------
     }
 }
+//проверить в Р9 обращение к не дедовским методам, когда он будет доделан
