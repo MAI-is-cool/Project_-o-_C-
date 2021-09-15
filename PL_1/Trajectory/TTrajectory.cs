@@ -168,18 +168,108 @@ namespace StandartHelperLibrary.MathHelper
 
             }
 
-            void F()
+            double F(double AL0)
             {
+                if (L5TR)
+                    VN[17] = AL0;
+                else
+                    VN[2] = AL0;
+                if (L2TR)
+                {
+                    T[9] = T[9] + 1;
+                    P9(ref VN[17], ref VN, ref T, ref GEO, ref L1PR, ref LDATA);
+                    VN[23] = VN[19];
+                    T[9] = T[9] - 1;
+                    P9(ref VN[17], ref VN, ref T, ref GEO, ref L1PR, ref LDATA);
+                    VN[24] = VN[23] - VN[19];
+                    VN[25] = VN[12] * VN[19] / (1 + VN[12]);
+                    if (Math.Abs(VN[25]) >= 1)
+                        T[2] = 1.57;
+                    else
+                        T[2] = Math.Atan(VN[25] / Math.Sqrt(1 - Math.Pow(VN[25], 2)));
+                    T[10] = T[2];
+                }
+                else if (L3TR)
+                {
+                    P9(ref VN[17], ref VN, ref T, ref GEO, ref L1PR, ref LDATA);
+                    T[1] = T[9];
+                    T[2] = Math.Atan(VN[19] / Math.Sqrt(1 - Math.Pow(VN[19], 2)));
+                    VN[24] = VN[19] / (1 - T[16]) * VN[18] / VN[32];
+                    T[10] = T[2];
+                }
+
+                if (L2TR)
+                    return (((1 + VN[12]) * VN[12] * VN[24] + VN[14] * VN[19]) / (Math.Pow((1 + VN[12]), 2) * Math.Cos(T[10])) - (1 + VN[12]) * (VN[20] + Math.Cos(T[10]) * (Math.Pow(T[9], 2) / (VN[1] * (VN[3] + T[11])) - 1)) / (T[9] * VN[19]));
+                else if (L3TR)
+                    return (VN[24] / Math.Cos(T[10]) - VN[1] / T[9] * (VN[26] * Math.Cos(T[10]) * (Math.Pow(T[9], 2) / (VN[1] * (VN[3] + T[11])) - 1)));
+                else
+                {
+                    Console.WriteLine("В функции FVN: L2TR и L3TR оба false, а значит выводится ноль");
+                    Console.ReadKey();
+                    return 0;
+                }
 
             }
 
-            void F1()
+            double F1(double AL1)
             {
-
+                VN[27] = AL1;
+                P9(ref VN[27], ref VN, ref T, ref GEO, ref L1PR, ref LDATA);
+                if (VN[12] == 0)
+                {
+                    if (H[1] > 0)
+                        return -VN[19];
+                    else
+                        return VN[19];
+                }
+                else
+                {
+                    if (VN[12] > 0)
+                    {
+                        if (H[1] > 0)
+                            return VN[19] - VN[16];
+                        else
+                            return VN[19];
+                    }
+                    else
+                    {
+                        if (H[1] > 0)
+                            return VN[19];
+                        else
+                            return VN[19] - VN[16];
+                    }
+                }
             }
 
-            void F2()
+            double F2(double AL2)
             {
+
+                VN[28] = AL2;
+                P9(ref VN[28], ref VN, ref T, ref GEO, ref L1PR, ref LDATA);
+                if (VN[12] == 0)
+                {
+                    if (H[1] > 0)
+                        return VN[19];
+                    else
+                        return -VN[19];
+                }
+                else
+                {
+                    if (VN[12] > 0)
+                    {
+                        if (H[1] > 0)
+                            return VN[19];
+                        else
+                            return VN[19] + VN[16];
+                    }
+                    else
+                    {
+                        if (H[1] > 0)
+                            return VN[19] + VN[16];
+                        else
+                            return VN[19];
+                    }
+                }
 
             }
 
@@ -187,10 +277,22 @@ namespace StandartHelperLibrary.MathHelper
             {
 
             }
-
+            
             void P10()
             {
-
+                L1PR = false;
+                L2PR = true;
+                L5TR = true;
+                LDATA = true;
+                L2DATA = false;
+                VN[2] = 0d;
+                L2TR = true;
+                L3TR = false;
+                L4TR = false;
+                T[3] = -4E-3 * Math.Pow((T[1] - 160), 2) + 38 * (T[1] - 160);
+                T[11] = T[3];
+                VN[13] = -8E-3 * (T[1] - 160) + 38;
+                VN[15] = -8E-3;
             }
         }
 
