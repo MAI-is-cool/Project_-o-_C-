@@ -170,7 +170,7 @@ namespace StandartHelperLibrary.MathHelper
                     Console.WriteLine();
                     Console.WriteLine();
                     Console.WriteLine( A+ F[6, 1]+ X[3]+ A+ F[6, 2]+ X[3]+ A+ F[6, 1]+ X[3]+ A+ F[7, 1]+ X[3]+ A+ F[6, 1]+ X[3]+ A+ F[5, 2]+ X[3]+ A+ F[5, 3]);
-                    Console.WriteLine("VN[17]=" + VN[17] * 75.3 + "VN[2]=" + VN[2] * 57.3 + "VN[10]=" + VN[10] + "K=" + VN[21] / VN[22] + "NX=" + NX + "VN[11]=" + VN[11] / 1000 + "VN[33]=" + VN[33]);
+                    Console.WriteLine("VN[17]=" + VN[17] * 75.3d + "VN[2]=" + VN[2] * 57.3d + "VN[10]=" + VN[10] + "K=" + VN[21] / VN[22] + "NX=" + NX + "VN[11]=" + VN[11] / 1000d + "VN[33]=" + VN[33]);
                     Console.WriteLine(A + F[5, 1] + X[2] + A + F[6, 3] + X[2] + A + F[5, 2] + X[2] + A + F[6, 2] + X[7] + A + F[6, 2] + X[5] + A + F[5, 2] + X[1] + A + F[4, 2]);
                     I = 0;
                 }
