@@ -56,7 +56,7 @@ namespace StandartHelperLibrary.MathHelper
 
             DATA(ref Y, ref GEO, ref LSERG, ref L1DATA);
 
-            TR(GEO, T, PR, DU, P1, LSERG, M3TR, L1DATA); //proverit' p1
+            TR(GEO, T, LSERG, L1DATA); //proverit' p1
 
             //конец SERG
             //реализовать альтернативу работы метки M3TR и M2TR, которые переводят в конец метода SERG
@@ -145,155 +145,14 @@ namespace StandartHelperLibrary.MathHelper
             L6TR = true;
 
         M1TR:
-            P1(N, M, H, FI, T, P2, L1TR, GEO, T, VN, LTR, L1TR, L1DATA);
+            P1(N, M, H, FI, T, L1TR, GEO, T, VN, LTR, L1TR, L1DATA, L2TR, L3TR, L5TR, LDATA, L1PR);
 
-            if(L6TR)
+            if (L6TR)
             {
                 L6TR = false;
                 goto M1TR;
             }
-
-            void P2()
-            {
-              
-            }
-
-            
-
-            void P8()
-            {
-               
-            }
-
-            double F(double AL0)
-            {
-                if (L5TR)
-                    VN[17] = AL0;
-                else
-                    VN[2] = AL0;
-                if (L2TR)
-                {
-                    T[9] = T[9] + 1;
-                    P9(VN[17]);
-                    VN[23] = VN[19];
-                    T[9] = T[9] - 1;
-                    P9(VN[17]);
-                    VN[24] = VN[23] - VN[19];
-                    VN[25] = VN[12] * VN[19] / (1 + VN[12]);
-                    if (Math.Abs(VN[25]) >= 1)
-                        T[2] = 1.57;
-                    else
-                        T[2] = Math.Atan(VN[25] / Math.Sqrt(1 - Math.Pow(VN[25], 2)));
-                    T[10] = T[2];
-                }
-                else if (L3TR)
-                {
-                    P9(VN[17]);
-                    T[1] = T[9];
-                    T[2] = Math.Atan(VN[19] / Math.Sqrt(1 - Math.Pow(VN[19], 2)));
-                    VN[24] = VN[19] / (1 - T[16]) * VN[18] / VN[32];
-                    T[10] = T[2];
-                }
-                if (L2TR)
-                    return (((1 + VN[12]) * VN[12] * VN[24] + VN[14] * VN[19]) / (Math.Pow((1 + VN[12]), 2) * Math.Cos(T[10])) - (1 + VN[12]) * (VN[20] + Math.Cos(T[10]) * (Math.Pow(T[9], 2) / (VN[1] * (VN[3] + T[11])) - 1)) / (T[9] * VN[19]));
-                else if (L3TR)
-                    return (VN[24] / Math.Cos(T[10]) - VN[1] / T[9] * (VN[26] * Math.Cos(T[10]) * (Math.Pow(T[9], 2) / (VN[1] * (VN[3] + T[11])) - 1)));
-                else
-                {
-                    Console.WriteLine("В функции FVN: L2TR и L3TR оба false, а значит выводится ноль");
-                    Console.ReadKey();
-                    return 0;
-                }
-            }
-
-            double F1(double AL1)
-            {
-                VN[27] = AL1;
-                P9(VN[27]);
-                if (VN[12] == 0)
-                {
-                    if (H[1] > 0)
-                        return -VN[19];
-                    else
-                        return VN[19];
-                }
-                else
-                {
-                    if (VN[12] > 0)
-                    {
-                        if (H[1] > 0)
-                            return VN[19] - VN[16];
-                        else
-                            return VN[19];
-                    }
-                    else
-                    {
-                        if (H[1] > 0)
-                            return VN[19];
-                        else
-                            return VN[19] - VN[16];
-                    }
-                }
-            }
-
-            double F2(double AL2)
-            {
-                VN[28] = AL2;
-                P9(VN[28]);
-                if (VN[12] == 0)
-                {
-                    if (H[1] > 0)
-                        return VN[19];
-                    else
-                        return -VN[19];
-                }
-                else
-                {
-                    if (VN[12] > 0)
-                    {
-                        if (H[1] > 0)
-                            return VN[19];
-                        else
-                            return VN[19] + VN[16];
-                    }
-                    else
-                    {
-                        if (H[1] > 0)
-                            return VN[19] + VN[16];
-                        else
-                            return VN[19];
-                    }
-                }
-            }
-
-            void P9(double AL)
-            {
-                VN[30] = AL;
-                VN[10] = T[9] / VN[6];
-                double[] AER = TDeterminationLiftingCoefficient.СalculationLiftingForceCoefficient(GEO, T[11], VN[10], VN[30], L1PR);//вызов программы расчета аэродинамических характеристик
-                VN[21] = AER[3];
-                VN[22] = AER[8];
-                double[] AB4 = DU(GEO, T[11], VN[10], VN[30]);//вызов программы расчета характеристик силовой установки
-                VN[31] = AB4[4];
-                VN[32] = AB4[5];
-                if (LDATA)
-                    VN[28] = GEO[10] * VN[31];
-                else
-                    VN[18] = GEO[23] * VN[31];
-                VN[19] = (VN[18] * Math.Cos(VN[30]) - VN[22] * VN[9] * Math.Pow(T[9], 2) / 2 / GEO[9]) / (1 - T[16]);
-                VN[26] = (VN[18] * Math.Sin(VN[30]) + VN[21] * VN[11] * Math.Cos(VN[2]) / GEO[9]) / (1 - T[16]);
-                if (VN[19] > GEO[14])
-                    VN[18] = (GEO[14] * (1 - T[16]) + VN[22] * VN[9] * Math.Pow(T[9], 2) / 2 / GEO[9]) / Math.Cos(VN[30]);
-                if (GEO[10] == 0 || GEO[23] == 0)
-                    VN[33] = 0;
-                else
-                {
-                    if (LDATA)
-                        VN[33] = VN[18] / (GEO[10] * VN[31]);
-                    else VN[33] = VN[18] / (GEO[23] * VN[31]);
-                }
-            }
-            
+          
             void P10()
             {
                 L1PR = false;
@@ -312,7 +171,7 @@ namespace StandartHelperLibrary.MathHelper
             }
         }
 
-        private void P1(int N, int M, double[] H, double[] FI, double[] Y, P2, bool LS1B1, double[] GEO, double[] T, double[] VN, bool LTR, bool L1TR, int L1DATA)
+        private void P1(int N, int M, double[] H, double[] FI, double[] Y, bool LS1B1, double[] GEO, double[] T, double[] VN, bool LTR, bool L1TR, int L1DATA, bool L2TR, bool L3TR, bool L5TR, bool LDATA, bool L1PR)
         {
             //double[] FI = new double[21];//увелчено на 1 для совместимости
             double KMIN = new double();
@@ -391,8 +250,8 @@ namespace StandartHelperLibrary.MathHelper
                 CST = ST;
             for (I = 1; I < N + 1; I++)
             {
-                if(J == 1)
-                    Y[2 * N + I]= Y[I];
+                if (J == 1)
+                    Y[2 * N + I] = Y[I];
                 Y[I] = Y[I] + Y[N + I] * ST;
             }
             goto M1SP1;
@@ -401,7 +260,252 @@ namespace StandartHelperLibrary.MathHelper
             //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+            double[] P2()
+            {
+                Func<double, double[], double[], double[], double[], bool, bool, bool,bool, bool, double> F_inc;
+                double[] C = new double[9];
+                double E = 1E-4;
+                double E1 = 1E-1;
+                double D1 = 1.4;
+                int D2 = 0;
+                double D3 = 0.4;
+                bool LOG1P2 = true;
+                bool L4TR = false;
+                L3TR = false;
+                L2TR = true;
+                L5TR = true;
+                double X2;
+                double X3;
+                double[] Atmosphere;
+                double HB;
+                double MU = 0;
+                if (LOG1P2 || L4TR)
+                {
 
+                    HB = T[11];
+                    Atmosphere = HelperMethods.SP6B1(VN[5], VN[6], VN[7], MU, HB);
+                    VN[5] = Atmosphere[1];
+                    VN[6] = Atmosphere[2];
+                    VN[7] = Atmosphere[3];
+                    MU = Atmosphere[4];
+                    VN[8] = VN[4] * Atmosphere[3];
+                    VN[9] = 0.12492 * VN[7] * 288.15 / Atmosphere[1];
+                    VN[10] = T[9] / Atmosphere[2];
+                    VN[11] = VN[9] * T[9] * T[9] / 2;
+                    LOG1P2 = false;
+                }
+
+                VN[2] = 0;
+                T[3] = -4E-3 * Math.Pow((T[1] - 160), 2) + 38 * (T[1] - 160);
+                T[11] = T[3];
+                VN[13] = -8E-3 * (T[1] - 160) + 38;
+                VN[15] = -8E-3;
+                HB = T[11];
+                Atmosphere = HelperMethods.SP6B1(VN[5], VN[6], VN[7], MU, HB);
+                VN[8] = VN[4] * Atmosphere[3];
+                VN[9] = 0.12492 * Atmosphere[3] * 288.15 / Atmosphere[1];
+                VN[10] = T[9] / Atmosphere[2];
+                VN[11] = VN[9] * T[9] * T[9] / 2;
+                if (L2TR)
+                {
+                    T[3] = T[11];
+                    VN[12] = VN[1] * VN[13] / T[9];
+                    VN[14] = VN[1] * (VN[15] - VN[13] / T[9]) / T[9];
+                    if (VN[12] != 0)
+                        VN[16] = 1 + 1 / VN[12];
+                    if (L5TR)
+                    {
+                        if (F1(D2, VN, GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) < 0)
+                        {
+                            VN[27] = D2;
+                            goto M1SP8;
+                        }
+                        X2 = D2;
+                        X3 = D3;
+                        F_inc = F1;
+                        VN[27] = P7(X2, X3, E, E1, F_inc);
+                        if (VN[27] == 0)
+                            goto M1P2;
+                        M1SP8:
+                        if (F2(D3, VN, GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) > 0)
+                        {
+                            VN[28] = D3;
+                            goto M2SP8;
+                        }
+                        X2 = D2;
+                        X3 = D3;
+                        F_inc = F2;
+                        VN[28] = P7(X2, X3, E, E1, F_inc);
+                        if (VN[28] == 0)//здесь должно быть условие типо если корней нет, то иди на эту метку, но я пока хз про метод P7
+                            goto M1P2;
+                        M2SP8:
+                        VN[27] = VN[27] + E1;
+                        VN[28] = VN[28] - E1;
+                    }
+                    else
+                    {
+                        VN[27] = D2;
+                        VN[28] = D1;
+                    }
+                    if (L5TR)
+                    {
+                        F_inc = F;
+                        VN[17] = P7(VN[27], VN[28], E, E1, F_inc);
+                        if (VN[17] == 0)
+                            goto M2P2;
+                    }
+                    else
+                    {
+                        F_inc = F;
+                        VN[2] = P7(VN[27], VN[28], E, E1, F_inc);
+                        if (VN[2] == 0)
+                            goto M1P2;
+                    }
+                    if (L2TR)
+                        goto M3P2;
+                    if (L3TR)
+                        goto M5P2;
+                    M2P2:
+                    if (L5TR)
+                    {
+                        F_inc = F;
+                        VN[17] = P7(-VN[28], -VN[27], E, E1, F_inc);
+                        if (VN[17] == 0)
+                            goto M1P2;
+                    }
+                    if (L2TR)
+                        goto M3P2;
+                    if (L3TR)
+                        goto M5P2;
+                    M5P2:
+                    C[1] = 0;
+                    C[2] = 0;
+                M3P2:
+                    VN[29] = VN[1] * ((VN[18] * Math.Cos(VN[17]) - VN[22] * VN[11] / GEO[9]) / (1 - T[16]) - Math.Sin(T[10]));
+                    C[1] = 1;
+                    C[2] = 0;
+                    C[3] = 0;
+                    C[4] = (T[9] * Math.Cos(T[10]) * Math.Cos(T[13]) * VN[3] / (VN[3] + T[11])) / VN[29];
+                    C[5] = VN[21] * VN[11] * VN[1] / GEO[9] / (1 - T[16]) * Math.Sin(VN[2]) / T[9] / Math.Cos(T[10]) / VN[29];
+                    C[6] = 1 / VN[29];
+                    C[7] = (T[9] * Math.Cos(T[10]) * Math.Sin(T[13])) / VN[29];
+                    C[7] = C[7] * VN[3] / (VN[3] + T[11]);
+                    C[8] = C[6] * VN[18] / VN[32];
+                }
+                if (L3TR || L4TR)
+                {
+                    if (L3TR)
+                    {
+                        VN[16] = 1;
+                        VN[12] = VN[1] * VN[13] / T[9];
+                        VN[14] = VN[1] * (VN[15] - VN[13] / T[9]) / T[9];
+                        if (VN[12] != 0)
+                            VN[16] = 1 + 1 / VN[12];
+                        if (L5TR)
+                        {
+                            if (F1(D2, VN, GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) < 0)
+                            {
+                                VN[27] = D2;
+                                goto M1SP8;
+                            }
+                            X2 = D2;
+                            X3 = D3;
+                            F_inc = F1;
+                            VN[27] = P7(X2, X3, E, E1, F_inc);
+                            if (VN[27] == 0)
+                                goto M1P2;
+                            M1SP8:
+
+                            if (F2(D3, VN, GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) > 0)
+                            {
+                                VN[28] = D3;
+                                goto M2SP8;
+                            }
+                            X2 = D2;
+                            X3 = D3;
+                            F_inc = F2;
+                            VN[28] = P7(X2, X3, E, E1, F_inc);
+                            if (VN[28] == 0)
+                                goto M1P2;
+                            M2SP8:
+                            VN[27] = VN[27] + E1;
+                            VN[28] = VN[28] - E1;
+                        }
+                        else
+                        {
+                            VN[27] = D2;
+                            VN[28] = D1;
+                        }
+                        if (L5TR)
+                        {
+                            F_inc = F;
+                            VN[17] = P7(VN[27], VN[28], E, E1, F_inc);
+                            if (VN[17] == 0)
+                                goto M2P2;
+                        }
+                        else
+                        {
+                            F_inc = F;
+                            VN[2] = P7(VN[27], VN[28], E, E1, F_inc);
+                            if (VN[2] == 0)
+                                goto M1P2;
+                        }
+                        if (L2TR)
+                            goto M3P2;
+                        M3P2:
+                        VN[29] = VN[1] * ((VN[18] * Math.Cos(VN[17]) - VN[22] * VN[11] / GEO[9]) / (1 - T[16]) - Math.Sin(T[10]));
+                        C[1] = 1;
+                        C[2] = 0;
+                        C[3] = 0;
+                        C[4] = (T[9] * Math.Cos(T[10]) * Math.Cos(T[13]) * VN[3] / (VN[3] + T[11])) / VN[29];
+                        C[5] = VN[21] * VN[11] * VN[1] / GEO[9] / (1 - T[16]) * Math.Sin(VN[2]) / T[9] / Math.Cos(T[10]) / VN[29];
+                        C[6] = 1 / VN[29];
+                        C[7] = (T[9] * Math.Cos(T[10]) * Math.Sin(T[13])) / VN[29];
+                        C[7] = C[7] * VN[3] / (VN[3] + T[11]);
+                        C[8] = C[6] * VN[18] / VN[32];
+                        if (L3TR)
+                            goto M5P2;
+                        M2P2:
+                        if (L5TR)
+                        {
+                            F_inc = F;
+                            VN[17] = P7(-VN[28], -VN[27], E, E1, F_inc);
+                            if (VN[17] == 0)
+                                goto M1P2;
+                        }
+                        if (L2TR)
+                            goto M3P2;
+                        if (L3TR)
+                            goto M5P2;
+                        M5P2:
+                        C[1] = 0;
+                        C[2] = 0;
+                    }
+                    if (L4TR)
+                    {
+                        P9(VN[17], VN, GEO, T, LDATA, L1PR);
+                        C[1] = VN[1] * ((VN[18] * Math.Cos(VN[17]) - VN[22] * VN[11] / GEO[9]) / (1 - T[16]) - Math.Sin(T[10]));
+                        C[2] = VN[1] * ((VN[18] * Math.Sin(VN[17]) + VN[21] * VN[11] * Math.Cos(VN[2]) / GEO[9]) / (1 - T[16]) - Math.Cos(T[10]) * VN[3] * VN[3] / Math.Pow((VN[3] + T[11]), 2)) / T[9] + T[9] * Math.Cos(T[10]) / (VN[3] + T[11]);
+                    }
+                    C[3] = T[9] * Math.Sin(T[10]);
+                    C[4] = T[9] * Math.Cos(T[10]) * Math.Cos(T[13]) * VN[3] / (VN[3] + T[11]);
+                    C[5] = VN[21] * VN[11] * VN[1] / GEO[9] / (1 - T[16]) * Math.Sin(VN[2]) / T[9] / Math.Cos(T[10]);
+                    C[6] = 1;
+                    C[7] = T[9] * Math.Cos(T[10]) * Math.Sin(T[13]);
+                    C[7] = C[7] * VN[3] / (VN[3] + T[11]);
+                    C[8] = VN[18] / VN[32];
+                }
+                for (int z = 1; z <= 8; z++)
+                {
+                    T[z + 8] = C[z];
+                }
+                goto M4P2;
+            M1P2:
+                Console.WriteLine();//что то выводится на консоль
+              //goto M2TR; вроде это вывод на печать но пока хз
+            M4P2:
+                return T;
+            }
 
             //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             void P3()
@@ -420,150 +524,49 @@ namespace StandartHelperLibrary.MathHelper
                 }
                 I = I + 1;
             }
-        }
-        ////-------------------------------------------------------------------
-        ///// <summary>
-        ///// Расчет стандартов атмосферы
-        ///// </summary>
-        ///// <param name="T">Температура</param>
-        ///// <param name="AA">Скорость звука</param>
-        ///// <param name="P">Давление</param>
-        ///// <param name="MM">Молярная масса</param>
-        ///// <param name="HH">Высота</param>
-        ///// <returns>Массив стандартов атмосферы</returns>
-        //private double[] P6(double T, double AA, double P, double MM, double HH)
-        //{
-        //    double[] Atmosphere = new double[6];
-        //    double I, L, S, R, G = new double();
-        //    double[,] K = new double[16, 3];
-        //    bool LS6B1 = new bool();
-        //    R = 6371210f;
-        //    G = 0.03416487f;
-        //    MM = 28.966f;
-        //    I = 1f;
-        //    K[1, 1] = -2E+3;
-        //    K[2, 1] = 0;
-        //    K[3, 2] = 0;
-        //    K[5, 2] = 0;
-        //    K[7, 2] = 0;
-        //    K[3, 1] = 11E+3;
-        //    K[4, 1] = 25E+3;
-        //    K[5, 1] = 46E+3;
-        //    K[6, 1] = 54E+3;
-        //    K[7, 1] = 8E+4;
-        //    K[8, 1] = 95E+3;
-        //    K[9, 1] = 11E+4;
-        //    K[10, 1] = 12E+4;
-        //    K[11, 1] = 15E+4;
-        //    K[12, 1] = 16E+4;
-        //    K[13, 1] = 2E+5;
-        //    K[14, 1] = 31E+4;
-        //    K[15, 1] = 31E+4;
-        //    K[1, 2] = -0.00652;
-        //    K[2, 2] = -0.00651;
-        //    K[4, 2] = 0.00276098;
-        //    K[6, 2] = -0.00349544;
-        //    K[8, 2] = 0.005;
-        //    K[9, 2] = 0.00801741;
-        //    K[10, 2] = 0.02346357;
-        //    K[11, 2] = 0.01987408;
-        //    K[12, 2] = 0.003084;
-        //    K[13, 2] = 0.00362;
-        //    P = 1.26119;
-        //    T = 301.19;
-        //    if (HH <= -2E+3)
-        //        goto M1SP6;
 
-        //    if (HH > 3E+5f)
-        //    {
-        //        T = 1657;
-        //        P = 1E-10;
-        //        goto M1SP6;
-        //    }
-        //    LS6B1 = true;
-        //M2SP6:
-        //    I = I + 1;
-        //    if (HH >= K[(int)I, 1])
-        //    {
-        //        S = (R / (R + K[(int)I, 1])) * (R / (R + K[(int)I - 1, 1])) * (K[(int)I, 1] - K[(int)I - 1, 1]);
-        //        L = T;
-        //        T = T + K[(int)I - 1, 2] * S;
-        //        if (Math.Abs(K[(int)I - 1, 2]) < 1E-5f)
-        //            P = P / Math.Exp(G * S / T);
-        //        else
-        //            P = P / Math.Pow(T / L, G / K[(int)I - 1, 2]);
-        //        if (((int)I < 16) && (LS6B1))
-        //            goto M2SP6;
-        //    }
-        //    if (LS6B1)
-        //    {
-        //        K[(int)I, 1] = HH;
-        //        I = I - 1;
-        //        LS6B1 = false;
-        //        goto M2SP6;
-        //    }
-        //    if ((HH > 95E+3) && (HH <= 11E+4))
-        //        MM = 23 + 5.966 * (float)Math.Sqrt(1 - ((HH - 95E+3) / 145E+3) * ((HH - 95E+3) / 145E+3));
-        //    if (HH > 11E+4f)
-        //        MM = 28.934 - 0.2066E-4 * (HH - 11E+4) - 0.3f * (float)Math.Pow((double)((HH - 137E+3) * 1E-5), 3d);
-        //    M1SP6:
-        //    AA = 20.0463 * (float)Math.Sqrt(T);
-        //    Atmosphere[1] = T;
-        //    Atmosphere[2] = AA;
-        //    Atmosphere[3] = P;
-        //    Atmosphere[4] = MM;
-        //    Atmosphere[5] = HH;
-        //    return Atmosphere;
-        //}
-        //----------------------------------------------------------------------------------------------------------------------
-        /// <summary>
-        /// Решение алегбраических уравнений методом деления интервала пополам
-        /// </summary>
-        /// <param name="A">Левая граница</param>
-        /// <param name="B">Правая граница</param>
-        /// <param name="EPS">Какая-то точность</param>
-        /// <param name="EPS1">Какая-то тоночть</param>
-        /// <param name="F"></param>
-        /// <returns>Решение алегбраических уравнений</returns>
-        private double P7(double A, double B, double EPS, double EPS1, Func<double, double> F)
-        {
-            double X;
-            X = A;
-            double Y = new double();
-            FF(ref Y);
-            if (Math.Abs(Y) <= EPS)
-                goto M2SP7;
 
-            X = B;
-            double Z = new double();
-            FF(ref Z);
-            if (Math.Abs(Z) <= EPS)
-                goto M2SP7;
-
-            if (Math.Sign(Y) == Math.Sign(Z))
+            double P7(double A, double B, double EPS, double EPS1, Func<double, double[], double[], double[], double[], bool, bool, bool, bool, bool, double> F)
             {
-                Console.WriteLine($"Корней нет\n\n{A}");
+                double X;
+                X = A;
+                double Y_P7 = new double();
+                FF(ref Y_P7);
+                if (Math.Abs(Y_P7) <= EPS)
+                    goto M2SP7;
+
+                X = B;
+                double Z = new double();
+                FF(ref Z);
+                if (Math.Abs(Z) <= EPS)
+                    goto M2SP7;
+
+                if (Math.Sign(Y_P7) == Math.Sign(Z))
+                {
+                    Console.WriteLine($"Корней нет\n\n{A}");
+                    return (X);
+                }
+            M3SP7:
+                X = A / 2f + B / 2f;
+                FF(ref Y_P7);
+                if (Math.Abs(Y_P7) <= EPS)
+                    goto M2SP7;
+                if (Math.Sign(Y_P7) == Math.Sign(Z))
+                    B = X;
+                else
+                    A = X;
+                if (Math.Abs(A - B) >= EPS1)
+                    goto M3SP7;
+
+                void FF(ref double YORZ)
+                {
+                    YORZ = F(X, VN, GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR);
+                }
+            M2SP7:
                 return (X);
             }
-        M3SP7:
-            X = A / 2f + B / 2f;
-            FF(ref Y);
-            if (Math.Abs(Y) <= EPS)
-                goto M2SP7;
-            if (Math.Sign(Y) == Math.Sign(Z))
-                B = X;
-            else
-                A = X;
-            if (Math.Abs(A - B) >= EPS1)
-                goto M3SP7;
-
-            void FF(ref double YORZ)
-            {
-                YORZ = F(X);
-            }
-        M2SP7:
-            return (X);
         }
+
         //---------------------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Расчет характеристик силовой установки
@@ -585,6 +588,135 @@ namespace StandartHelperLibrary.MathHelper
             return AB4;
         }
         //------------------------------------------------------------------------------------------------------------
+
+        private double F(double AL0, double[] VN, double[] GEO, double[] T, double[] H, bool L2TR, bool L3TR, bool L5TR, bool LDATA, bool L1PR)
+        {
+            if (L5TR)
+                VN[17] = AL0;
+            else
+                VN[2] = AL0;
+            if (L2TR)
+            {
+                T[9] = T[9] + 1;
+                P9(VN[17], VN, GEO, T, LDATA, L1PR);
+                VN[23] = VN[19];
+                T[9] = T[9] - 1;
+                P9(VN[17], VN, GEO, T, LDATA, L1PR);
+                VN[24] = VN[23] - VN[19];
+                VN[25] = VN[12] * VN[19] / (1 + VN[12]);
+                if (Math.Abs(VN[25]) >= 1)
+                    T[2] = 1.57;
+                else
+                    T[2] = Math.Atan(VN[25] / Math.Sqrt(1 - Math.Pow(VN[25], 2)));
+                T[10] = T[2];
+            }
+            else if (L3TR)
+            {
+                P9(VN[17], VN, GEO, T, LDATA, L1PR);
+                T[1] = T[9];
+                T[2] = Math.Atan(VN[19] / Math.Sqrt(1 - Math.Pow(VN[19], 2)));
+                VN[24] = VN[19] / (1 - T[16]) * VN[18] / VN[32];
+                T[10] = T[2];
+            }
+            if (L2TR)
+                return (((1 + VN[12]) * VN[12] * VN[24] + VN[14] * VN[19]) / (Math.Pow((1 + VN[12]), 2) * Math.Cos(T[10])) - (1 + VN[12]) * (VN[20] + Math.Cos(T[10]) * (Math.Pow(T[9], 2) / (VN[1] * (VN[3] + T[11])) - 1)) / (T[9] * VN[19]));
+            else if (L3TR)
+                return (VN[24] / Math.Cos(T[10]) - VN[1] / T[9] * (VN[26] * Math.Cos(T[10]) * (Math.Pow(T[9], 2) / (VN[1] * (VN[3] + T[11])) - 1)));
+            else
+            {
+                Console.WriteLine("В функции F: L2TR и L3TR оба false, а значит выводится ноль");
+                Console.ReadKey();
+                return 0;
+            }
+        }
+
+        private double F1(double AL1, double[] VN, double[] GEO, double[] T, double[] H, bool L2TR, bool L3TR, bool L5TR, bool LDATA, bool L1PR)
+        {
+            VN[27] = AL1;
+            P9(VN[27], VN, GEO, T, LDATA, L1PR);
+            if (VN[12] == 0)
+            {
+                if (H[1] > 0)
+                    return -VN[19];
+                else
+                    return VN[19];
+            }
+            else
+            {
+                if (VN[12] > 0)
+                {
+                    if (H[1] > 0)
+                        return VN[19] - VN[16];
+                    else
+                        return VN[19];
+                }
+                else
+                {
+                    if (H[1] > 0)
+                        return VN[19];
+                    else
+                        return VN[19] - VN[16];
+                }
+            }
+        }
+
+        private double F2(double AL2, double[] VN, double[] GEO, double[] T, double[] H, bool L2TR, bool L3TR, bool L5TR, bool LDATA, bool L1PR)
+        {
+            VN[28] = AL2;
+            P9(VN[28], VN, GEO, T, LDATA, L1PR);
+            if (VN[12] == 0)
+            {
+                if (H[1] > 0)
+                    return VN[19];
+                else
+                    return -VN[19];
+            }
+            else
+            {
+                if (VN[12] > 0)
+                {
+                    if (H[1] > 0)
+                        return VN[19];
+                    else
+                        return VN[19] + VN[16];
+                }
+                else
+                {
+                    if (H[1] > 0)
+                        return VN[19] + VN[16];
+                    else
+                        return VN[19];
+                }
+            }
+        }
+
+        private void P9(double AL, double[] VN, double[] GEO, double[] T, bool LDATA, bool L1PR)
+        {
+            VN[30] = AL;
+            VN[10] = T[9] / VN[6];
+            double[] AER = TDeterminationLiftingCoefficient.СalculationLiftingForceCoefficient(GEO, T[11], VN[10], VN[30], L1PR);//вызов программы расчета аэродинамических характеристик
+            VN[21] = AER[3];
+            VN[22] = AER[8];
+            double[] AB4 = DU(GEO, T[11], VN[10], VN[30]);//вызов программы расчета характеристик силовой установки
+            VN[31] = AB4[4];
+            VN[32] = AB4[5];
+            if (LDATA)
+                VN[28] = GEO[10] * VN[31];
+            else
+                VN[18] = GEO[23] * VN[31];
+            VN[19] = (VN[18] * Math.Cos(VN[30]) - VN[22] * VN[9] * Math.Pow(T[9], 2) / 2 / GEO[9]) / (1 - T[16]);
+            VN[26] = (VN[18] * Math.Sin(VN[30]) + VN[21] * VN[11] * Math.Cos(VN[2]) / GEO[9]) / (1 - T[16]);
+            if (VN[19] > GEO[14])
+                VN[18] = (GEO[14] * (1 - T[16]) + VN[22] * VN[9] * Math.Pow(T[9], 2) / 2 / GEO[9]) / Math.Cos(VN[30]);
+            if (GEO[10] == 0 || GEO[23] == 0)
+                VN[33] = 0;
+            else
+            {
+                if (LDATA)
+                    VN[33] = VN[18] / (GEO[10] * VN[31]);
+                else VN[33] = VN[18] / (GEO[23] * VN[31]);
+            }
+        }
     }
 }
 //проверить в Р9 обращение к не дедовским методам, когда он будет доделан
