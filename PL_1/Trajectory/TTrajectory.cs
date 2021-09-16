@@ -56,7 +56,7 @@ namespace StandartHelperLibrary.MathHelper
 
             DATA(ref Y, ref GEO, ref LSERG, ref L1DATA);
 
-            TR(GEO, T, PR, DU, P1, LSERG, M3TR, L1DATA);
+            TR(GEO, T, PR, DU, P1, LSERG, M3TR, L1DATA); //proverit' p1
 
             //конец SERG
             //реализовать альтернативу работы метки M3TR и M2TR, которые переводят в конец метода SERG
@@ -144,8 +144,8 @@ namespace StandartHelperLibrary.MathHelper
 
             L6TR = true;
 
-            M1TR:
-            P1(N, M, H, FI, T, P2, P3, L1TR);
+        M1TR:
+            P1(N, M, H, FI, T, P2, L1TR, GEO, T, VN, LTR, L1TR, L1DATA);
 
             if(L6TR)
             {
@@ -158,24 +158,7 @@ namespace StandartHelperLibrary.MathHelper
               
             }
 
-            void P3()
-            {
-                double NX = new double();
-                FI[1] = GEO[15] - T[8];
-                FI[2] = GEO[16] - T[1];
-                NX = (VN[18] * Math.Cos(VN[17]) - VN[22] * VN[11] / GEO[9]) / (1 - T[8]);
-                if( LTR && I == L1DATA || LTR && L1TR)
-                {
-                    Console.WriteLine("T[6]=" + T[6] + "T[3]=" + T[3] / 1000d + "T[1]=" + T[1] + "T(4)=" + T[4] / 1000d + "T[7]=" + T[7] / 1000d + "T[2]=" + T[2] * 57.3d + "T[8]=" + T[8]);
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.WriteLine( A+ F[6, 1]+ X[3]+ A+ F[6, 2]+ X[3]+ A+ F[6, 1]+ X[3]+ A+ F[7, 1]+ X[3]+ A+ F[6, 1]+ X[3]+ A+ F[5, 2]+ X[3]+ A+ F[5, 3]);
-                    Console.WriteLine("VN[17]=" + VN[17] * 75.3d + "VN[2]=" + VN[2] * 57.3d + "VN[10]=" + VN[10] + "K=" + VN[21] / VN[22] + "NX=" + NX + "VN[11]=" + VN[11] / 1000d + "VN[33]=" + VN[33]);
-                    Console.WriteLine(A + F[5, 1] + X[2] + A + F[6, 3] + X[2] + A + F[5, 2] + X[2] + A + F[6, 2] + X[7] + A + F[6, 2] + X[5] + A + F[5, 2] + X[1] + A + F[4, 2]);
-                    I = 0;
-                }
-                I = I + 1;
-            }
+            
 
             void P8()
             {
@@ -329,7 +312,7 @@ namespace StandartHelperLibrary.MathHelper
             }
         }
 
-        private void P1(int N, int M, double[] H, double[] FI, double[] Y, P2, P3, bool LS1B1)
+        private void P1(int N, int M, double[] H, double[] FI, double[] Y, P2, bool LS1B1, double[] GEO, double[] T, double[] VN, bool LTR, bool L1TR, int L1DATA)
         {
             //double[] FI = new double[21];//увелчено на 1 для совместимости
             double KMIN = new double();
@@ -415,101 +398,123 @@ namespace StandartHelperLibrary.MathHelper
             goto M1SP1;
         M3SP1:
             LS1B1 = true;
-        }
-        //-------------------------------------------------------------------
-        /// <summary>
-        /// Расчет стандартов атмосферы
-        /// </summary>
-        /// <param name="T">Температура</param>
-        /// <param name="AA">Скорость звука</param>
-        /// <param name="P">Давление</param>
-        /// <param name="MM">Молярная масса</param>
-        /// <param name="HH">Высота</param>
-        /// <returns>Массив стандартов атмосферы</returns>
-        public static double[] P6(double T, double AA, double P, double MM, double HH)
-        {
-            double[] Atmosphere = new double[6];
-            double I, L, S, R, G = new double();
-            double[,] K = new double[16, 3];
-            bool LS6B1 = new bool();
-            R = 6371210f;
-            G = 0.03416487f;
-            MM = 28.966f;
-            I = 1f;
-            K[1, 1] = -2E+3;
-            K[2, 1] = 0;
-            K[3, 2] = 0;
-            K[5, 2] = 0;
-            K[7, 2] = 0;
-            K[3, 1] = 11E+3;
-            K[4, 1] = 25E+3;
-            K[5, 1] = 46E+3;
-            K[6, 1] = 54E+3;
-            K[7, 1] = 8E+4;
-            K[8, 1] = 95E+3;
-            K[9, 1] = 11E+4;
-            K[10, 1] = 12E+4;
-            K[11, 1] = 15E+4;
-            K[12, 1] = 16E+4;
-            K[13, 1] = 2E+5;
-            K[14, 1] = 31E+4;
-            K[15, 1] = 31E+4;
-            K[1, 2] = -0.00652;
-            K[2, 2] = -0.00651;
-            K[4, 2] = 0.00276098;
-            K[6, 2] = -0.00349544;
-            K[8, 2] = 0.005;
-            K[9, 2] = 0.00801741;
-            K[10, 2] = 0.02346357;
-            K[11, 2] = 0.01987408;
-            K[12, 2] = 0.003084;
-            K[13, 2] = 0.00362;
-            P = 1.26119;
-            T = 301.19;
-            if (HH <= -2E+3)
-                goto M1SP6;
+            //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-            if (HH > 3E+5f)
+
+
+
+            //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            void P3()
             {
-                T = 1657;
-                P = 1E-10;
-                goto M1SP6;
+                double NX = new double();
+                FI[1] = GEO[15] - T[8];
+                FI[2] = GEO[16] - T[1];
+                NX = (VN[18] * Math.Cos(VN[17]) - VN[22] * VN[11] / GEO[9]) / (1 - T[8]);
+                if (LTR && I == L1DATA || LTR && L1TR)
+                {
+                    Console.WriteLine("T[6]=" + T[6] + "T[3]=" + T[3] / 1000d + "T[1]=" + T[1] + "T(4)=" + T[4] / 1000d + "T[7]=" + T[7] / 1000d + "T[2]=" + T[2] * 57.3d + "T[8]=" + T[8]);
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine("VN[17]=" + VN[17] * 75.3d + "VN[2]=" + VN[2] * 57.3d + "VN[10]=" + VN[10] + "K=" + VN[21] / VN[22] + "NX=" + NX + "VN[11]=" + VN[11] / 1000d + "VN[33]=" + VN[33]);
+                    I = 0;
+                }
+                I = I + 1;
             }
-            LS6B1 = true;
-        M2SP6:
-            I = I + 1;
-            if (HH >= K[(int)I, 1])
-            {
-                S = (R / (R + K[(int)I, 1])) * (R / (R + K[(int)I - 1, 1])) * (K[(int)I, 1] - K[(int)I - 1, 1]);
-                L = T;
-                T = T + K[(int)I - 1, 2] * S;
-                if (Math.Abs(K[(int)I - 1, 2]) < 1E-5f)
-                    P = P / Math.Exp(G * S / T);
-                else
-                    P = P / Math.Pow(T / L, G / K[(int)I - 1, 2]);
-                if (((int)I < 16) && (LS6B1))
-                    goto M2SP6;
-            }
-            if (LS6B1)
-            {
-                K[(int)I, 1] = HH;
-                I = I - 1;
-                LS6B1 = false;
-                goto M2SP6;
-            }
-            if ((HH > 95E+3) && (HH <= 11E+4))
-                MM = 23 + 5.966 * (float)Math.Sqrt(1 - ((HH - 95E+3) / 145E+3) * ((HH - 95E+3) / 145E+3));
-            if (HH > 11E+4f)
-                MM = 28.934 - 0.2066E-4 * (HH - 11E+4) - 0.3f * (float)Math.Pow((double)((HH - 137E+3) * 1E-5), 3d);
-            M1SP6:
-            AA = 20.0463 * (float)Math.Sqrt(T);
-            Atmosphere[1] = T;
-            Atmosphere[2] = AA;
-            Atmosphere[3] = P;
-            Atmosphere[4] = MM;
-            Atmosphere[5] = HH;
-            return Atmosphere;
         }
+        ////-------------------------------------------------------------------
+        ///// <summary>
+        ///// Расчет стандартов атмосферы
+        ///// </summary>
+        ///// <param name="T">Температура</param>
+        ///// <param name="AA">Скорость звука</param>
+        ///// <param name="P">Давление</param>
+        ///// <param name="MM">Молярная масса</param>
+        ///// <param name="HH">Высота</param>
+        ///// <returns>Массив стандартов атмосферы</returns>
+        //private double[] P6(double T, double AA, double P, double MM, double HH)
+        //{
+        //    double[] Atmosphere = new double[6];
+        //    double I, L, S, R, G = new double();
+        //    double[,] K = new double[16, 3];
+        //    bool LS6B1 = new bool();
+        //    R = 6371210f;
+        //    G = 0.03416487f;
+        //    MM = 28.966f;
+        //    I = 1f;
+        //    K[1, 1] = -2E+3;
+        //    K[2, 1] = 0;
+        //    K[3, 2] = 0;
+        //    K[5, 2] = 0;
+        //    K[7, 2] = 0;
+        //    K[3, 1] = 11E+3;
+        //    K[4, 1] = 25E+3;
+        //    K[5, 1] = 46E+3;
+        //    K[6, 1] = 54E+3;
+        //    K[7, 1] = 8E+4;
+        //    K[8, 1] = 95E+3;
+        //    K[9, 1] = 11E+4;
+        //    K[10, 1] = 12E+4;
+        //    K[11, 1] = 15E+4;
+        //    K[12, 1] = 16E+4;
+        //    K[13, 1] = 2E+5;
+        //    K[14, 1] = 31E+4;
+        //    K[15, 1] = 31E+4;
+        //    K[1, 2] = -0.00652;
+        //    K[2, 2] = -0.00651;
+        //    K[4, 2] = 0.00276098;
+        //    K[6, 2] = -0.00349544;
+        //    K[8, 2] = 0.005;
+        //    K[9, 2] = 0.00801741;
+        //    K[10, 2] = 0.02346357;
+        //    K[11, 2] = 0.01987408;
+        //    K[12, 2] = 0.003084;
+        //    K[13, 2] = 0.00362;
+        //    P = 1.26119;
+        //    T = 301.19;
+        //    if (HH <= -2E+3)
+        //        goto M1SP6;
+
+        //    if (HH > 3E+5f)
+        //    {
+        //        T = 1657;
+        //        P = 1E-10;
+        //        goto M1SP6;
+        //    }
+        //    LS6B1 = true;
+        //M2SP6:
+        //    I = I + 1;
+        //    if (HH >= K[(int)I, 1])
+        //    {
+        //        S = (R / (R + K[(int)I, 1])) * (R / (R + K[(int)I - 1, 1])) * (K[(int)I, 1] - K[(int)I - 1, 1]);
+        //        L = T;
+        //        T = T + K[(int)I - 1, 2] * S;
+        //        if (Math.Abs(K[(int)I - 1, 2]) < 1E-5f)
+        //            P = P / Math.Exp(G * S / T);
+        //        else
+        //            P = P / Math.Pow(T / L, G / K[(int)I - 1, 2]);
+        //        if (((int)I < 16) && (LS6B1))
+        //            goto M2SP6;
+        //    }
+        //    if (LS6B1)
+        //    {
+        //        K[(int)I, 1] = HH;
+        //        I = I - 1;
+        //        LS6B1 = false;
+        //        goto M2SP6;
+        //    }
+        //    if ((HH > 95E+3) && (HH <= 11E+4))
+        //        MM = 23 + 5.966 * (float)Math.Sqrt(1 - ((HH - 95E+3) / 145E+3) * ((HH - 95E+3) / 145E+3));
+        //    if (HH > 11E+4f)
+        //        MM = 28.934 - 0.2066E-4 * (HH - 11E+4) - 0.3f * (float)Math.Pow((double)((HH - 137E+3) * 1E-5), 3d);
+        //    M1SP6:
+        //    AA = 20.0463 * (float)Math.Sqrt(T);
+        //    Atmosphere[1] = T;
+        //    Atmosphere[2] = AA;
+        //    Atmosphere[3] = P;
+        //    Atmosphere[4] = MM;
+        //    Atmosphere[5] = HH;
+        //    return Atmosphere;
+        //}
         //----------------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Решение алегбраических уравнений методом деления интервала пополам
@@ -567,14 +572,14 @@ namespace StandartHelperLibrary.MathHelper
         /// <param name="A4"></param>
         /// <param name="B4"></param>
         /// <returns>Характеристики силовой установки</returns>
-        public static double[] DU(double[] GEO, double A4, double B4, double C4)
+        private double[] DU(double[] GEO, double A4, double B4, double C4)
         {
             double[] AB4 = new double[10];
             double[] BB4 = new double[10];
             AB4[1] = A4;
             AB4[2] = B4;
             AB4[3] = C4;
-            double[] Atmosphere = P6(BB4[1], BB4[2], BB4[3], BB4[4], GEO[1]);
+            double[] Atmosphere = HelperMethods.SP6B1(BB4[1], BB4[2], BB4[3], BB4[4], GEO[1]);
             AB4[4] = (1 - (1 - 1 / GEO[23]) * Atmosphere[3]) * GEO[23];
             AB4[5] = AB4[4] * GEO[20] / GEO[21];
             return AB4;

@@ -9,7 +9,7 @@ namespace StandartHelperLibrary.MathHelper
 {
     class TDeterminationLiftingCoefficient
     {
-//---------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------
         /// <summary>
         /// Расчет коэффициента подъемной силы и аэродинамического сопративления ЛА
         /// </summary>
@@ -128,16 +128,7 @@ namespace StandartHelperLibrary.MathHelper
             if (GEO[79] == 0)
                 VN[21] = 1;
             AER[3] = VN[21] * AER[1] * VN[22] * 1 + AER[2] * GEO[81];
-
-            double[] Atmosphere =
-                        {
-                        0,
-                        TLinearyInterpolation.Interpolate(TDatabaseAtmospheric.Attitude, TDatabaseAtmospheric.TemperatureOfCelsius, TDatabaseAtmospheric.CountX, H),
-                        TLinearyInterpolation.Interpolate(TDatabaseAtmospheric.Attitude, TDatabaseAtmospheric.SpeedOfSound, TDatabaseAtmospheric.CountX, H),
-                        TLinearyInterpolation.Interpolate(TDatabaseAtmospheric.Attitude, TDatabaseAtmospheric.Pressure, TDatabaseAtmospheric.CountX, H)
-                         };
-
-
+            double[] Atmosphere = HelperMethods.SP6B1(VN[23], VN[24], VN[25], VN[26], VN[1]);
             VN[27] = 2.7781E-2 * 7.41673E-9 * Atmosphere[2] * Atmosphere[1] * Atmosphere[1] / (Atmosphere[1] + 110.4) / Atmosphere[3];
             VN[24] = Atmosphere[2];
             AER[7] = HelperMethods.CVM5(GEO[89], GEO[90], GEO[91], GEO[92], GEO[93], GEO[94], GEO[95], VN, GEO);
