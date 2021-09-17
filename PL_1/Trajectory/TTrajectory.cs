@@ -8,6 +8,8 @@ namespace StandartHelperLibrary.MathHelper
 {
     class TTrajectory
     {
+        private delegate double F_inc_del(double AL0, ref double[] VN, ref double[] GEO, double[] T, double[] H, bool L2TR, bool L3TR, bool L5TR, bool LDATA, bool L1PR);
+
         public void SERG()//SERG УСЛОВНО = MAIN
         {
             bool LSERG = true;
@@ -62,7 +64,6 @@ namespace StandartHelperLibrary.MathHelper
             //реализовать альтернативу работы метки M3TR и M2TR, которые переводят в конец метода SERG
         }
         
-
         private void DATA(ref double[] Y, ref double[] GEO, ref bool LSERG, ref int L1DATA)
         {
             for (int z = 1; z < 31; z++)//смещенный массив для совместимости
@@ -87,8 +88,7 @@ namespace StandartHelperLibrary.MathHelper
             LSERG = true;
             L1DATA = 20;
         }
-
-
+        
         private void TR(double[] GEO, double[] T, bool LTR, int L1DATA/*, M2TR = M3TR - метка завершения всего серга*/)
         {
             bool LDATA = new bool();
@@ -107,13 +107,11 @@ namespace StandartHelperLibrary.MathHelper
             bool L3TR = new bool();
             bool L4TR = new bool();
             bool L6TR = new bool();
-
-            //=========возможно инты
+            
             int I = new int();
             int K = new int();
             int M = new int();
             int N = new int();
-            //==========
 
             double D1 = new double();
             double D2 = new double();
@@ -148,8 +146,8 @@ namespace StandartHelperLibrary.MathHelper
             P1(N, M, H, FI, T, L1TR, GEO, T, VN, LTR, L1TR, L1DATA, L2TR, L3TR, L5TR, LDATA, L1PR);
 
             if (L6TR)
-            {
-                L6TR = false;
+            {                             //зачем?
+                L6TR = false;        //секция загадки человечества
                 goto M1TR;
             }
           
@@ -262,7 +260,7 @@ namespace StandartHelperLibrary.MathHelper
 
             double[] P2()
             {
-                Func<double, double[], double[], double[], double[], bool, bool, bool,bool, bool, double> F_inc;
+                F_inc_del F_inc;
                 double[] C = new double[9];
                 double E = 1E-4;
                 double E1 = 1E-1;
@@ -288,6 +286,7 @@ namespace StandartHelperLibrary.MathHelper
                     VN[6] = Atmosphere[2];
                     VN[7] = Atmosphere[3];
                     MU = Atmosphere[4];
+                    HB = Atmosphere[5];//1
                     VN[8] = VN[4] * Atmosphere[3];
                     VN[9] = 0.12492 * VN[7] * 288.15 / Atmosphere[1];
                     VN[10] = T[9] / Atmosphere[2];
@@ -302,6 +301,11 @@ namespace StandartHelperLibrary.MathHelper
                 VN[15] = -8E-3;
                 HB = T[11];
                 Atmosphere = HelperMethods.SP6B1(VN[5], VN[6], VN[7], MU, HB);
+                VN[5] = Atmosphere[1];//1
+                VN[6] = Atmosphere[2];//2
+                VN[7] = Atmosphere[3];//3
+                MU = Atmosphere[4];//4
+                HB = Atmosphere[5];//5
                 VN[8] = VN[4] * Atmosphere[3];
                 VN[9] = 0.12492 * Atmosphere[3] * 288.15 / Atmosphere[1];
                 VN[10] = T[9] / Atmosphere[2];
@@ -315,7 +319,7 @@ namespace StandartHelperLibrary.MathHelper
                         VN[16] = 1 + 1 / VN[12];
                     if (L5TR)
                     {
-                        if (F1(D2, VN, GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) < 0)
+                        if (F1(D2, ref VN, ref GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) < 0)
                         {
                             VN[27] = D2;
                             goto M1SP8;
@@ -327,7 +331,7 @@ namespace StandartHelperLibrary.MathHelper
                         if (VN[27] == 0)
                             goto M1P2;
                         M1SP8:
-                        if (F2(D3, VN, GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) > 0)
+                        if (F2(D3, ref VN, ref GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) > 0)
                         {
                             VN[28] = D3;
                             goto M2SP8;
@@ -403,7 +407,7 @@ namespace StandartHelperLibrary.MathHelper
                             VN[16] = 1 + 1 / VN[12];
                         if (L5TR)
                         {
-                            if (F1(D2, VN, GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) < 0)
+                            if (F1(D2, ref VN, ref GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) < 0)
                             {
                                 VN[27] = D2;
                                 goto M1SP8;
@@ -416,7 +420,7 @@ namespace StandartHelperLibrary.MathHelper
                                 goto M1P2;
                             M1SP8:
 
-                            if (F2(D3, VN, GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) > 0)
+                            if (F2(D3, ref VN, ref GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR) > 0)
                             {
                                 VN[28] = D3;
                                 goto M2SP8;
@@ -483,7 +487,7 @@ namespace StandartHelperLibrary.MathHelper
                     }
                     if (L4TR)
                     {
-                        P9(VN[17], VN, GEO, T, LDATA, L1PR);
+                        P9(VN[17], ref VN, ref GEO, T, LDATA, L1PR);
                         C[1] = VN[1] * ((VN[18] * Math.Cos(VN[17]) - VN[22] * VN[11] / GEO[9]) / (1 - T[16]) - Math.Sin(T[10]));
                         C[2] = VN[1] * ((VN[18] * Math.Sin(VN[17]) + VN[21] * VN[11] * Math.Cos(VN[2]) / GEO[9]) / (1 - T[16]) - Math.Cos(T[10]) * VN[3] * VN[3] / Math.Pow((VN[3] + T[11]), 2)) / T[9] + T[9] * Math.Cos(T[10]) / (VN[3] + T[11]);
                     }
@@ -526,7 +530,7 @@ namespace StandartHelperLibrary.MathHelper
             }
 
 
-            double P7(double A, double B, double EPS, double EPS1, Func<double, double[], double[], double[], double[], bool, bool, bool, bool, bool, double> F)
+            double P7(double A, double B, double EPS, double EPS1, F_inc_del F)
             {
                 double X;
                 X = A;
@@ -560,7 +564,7 @@ namespace StandartHelperLibrary.MathHelper
 
                 void FF(ref double YORZ)
                 {
-                    YORZ = F(X, VN, GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR);
+                    YORZ = F(X, ref VN, ref GEO, T, H, L2TR, L3TR, L5TR, LDATA, L1PR);
                 }
             M2SP7:
                 return (X);
@@ -575,7 +579,7 @@ namespace StandartHelperLibrary.MathHelper
         /// <param name="A4"></param>
         /// <param name="B4"></param>
         /// <returns>Характеристики силовой установки</returns>
-        private double[] DU(double[] GEO, double A4, double B4, double C4)
+        private double[] DU(ref double[] GEO, double A4, double B4, double C4)
         {
             double[] AB4 = new double[10];
             double[] BB4 = new double[10];
@@ -583,13 +587,20 @@ namespace StandartHelperLibrary.MathHelper
             AB4[2] = B4;
             AB4[3] = C4;
             double[] Atmosphere = HelperMethods.SP6B1(BB4[1], BB4[2], BB4[3], BB4[4], GEO[1]);
+
+            BB4[1] = Atmosphere[1];//1
+            BB4[2] = Atmosphere[2];//2
+            BB4[3] = Atmosphere[3];//3
+            BB4[4] = Atmosphere[4];//4
+            GEO[1] = Atmosphere[5];//5
+
             AB4[4] = (1 - (1 - 1 / GEO[23]) * Atmosphere[3]) * GEO[23];
             AB4[5] = AB4[4] * GEO[20] / GEO[21];
             return AB4;
         }
         //------------------------------------------------------------------------------------------------------------
 
-        private double F(double AL0, double[] VN, double[] GEO, double[] T, double[] H, bool L2TR, bool L3TR, bool L5TR, bool LDATA, bool L1PR)
+        private double F(double AL0, ref double[] VN, ref double[] GEO, double[] T, double[] H, bool L2TR, bool L3TR, bool L5TR, bool LDATA, bool L1PR)
         {
             if (L5TR)
                 VN[17] = AL0;
@@ -598,10 +609,10 @@ namespace StandartHelperLibrary.MathHelper
             if (L2TR)
             {
                 T[9] = T[9] + 1;
-                P9(VN[17], VN, GEO, T, LDATA, L1PR);
+                P9(VN[17], ref VN, ref GEO, T, LDATA, L1PR);
                 VN[23] = VN[19];
                 T[9] = T[9] - 1;
-                P9(VN[17], VN, GEO, T, LDATA, L1PR);
+                P9(VN[17], ref VN, ref GEO, T, LDATA, L1PR);
                 VN[24] = VN[23] - VN[19];
                 VN[25] = VN[12] * VN[19] / (1 + VN[12]);
                 if (Math.Abs(VN[25]) >= 1)
@@ -612,7 +623,7 @@ namespace StandartHelperLibrary.MathHelper
             }
             else if (L3TR)
             {
-                P9(VN[17], VN, GEO, T, LDATA, L1PR);
+                P9(VN[17], ref VN, ref GEO, T, LDATA, L1PR);
                 T[1] = T[9];
                 T[2] = Math.Atan(VN[19] / Math.Sqrt(1 - Math.Pow(VN[19], 2)));
                 VN[24] = VN[19] / (1 - T[16]) * VN[18] / VN[32];
@@ -630,10 +641,10 @@ namespace StandartHelperLibrary.MathHelper
             }
         }
 
-        private double F1(double AL1, double[] VN, double[] GEO, double[] T, double[] H, bool L2TR, bool L3TR, bool L5TR, bool LDATA, bool L1PR)
+        private double F1(double AL1, ref double[] VN, ref double[] GEO, double[] T, double[] H, bool L2TR, bool L3TR, bool L5TR, bool LDATA, bool L1PR)
         {
             VN[27] = AL1;
-            P9(VN[27], VN, GEO, T, LDATA, L1PR);
+            P9(VN[27], ref VN, ref GEO, T, LDATA, L1PR);
             if (VN[12] == 0)
             {
                 if (H[1] > 0)
@@ -660,10 +671,10 @@ namespace StandartHelperLibrary.MathHelper
             }
         }
 
-        private double F2(double AL2, double[] VN, double[] GEO, double[] T, double[] H, bool L2TR, bool L3TR, bool L5TR, bool LDATA, bool L1PR)
+        private double F2(double AL2, ref double[] VN, ref double[] GEO, double[] T, double[] H, bool L2TR, bool L3TR, bool L5TR, bool LDATA, bool L1PR)
         {
             VN[28] = AL2;
-            P9(VN[28], VN, GEO, T, LDATA, L1PR);
+            P9(VN[28], ref VN, ref GEO, T, LDATA, L1PR);
             if (VN[12] == 0)
             {
                 if (H[1] > 0)
@@ -690,14 +701,14 @@ namespace StandartHelperLibrary.MathHelper
             }
         }
 
-        private void P9(double AL, double[] VN, double[] GEO, double[] T, bool LDATA, bool L1PR)
+        private void P9(double AL, ref double[] VN, ref double[] GEO, double[] T, bool LDATA, bool L1PR)
         {
             VN[30] = AL;
             VN[10] = T[9] / VN[6];
             double[] AER = TDeterminationLiftingCoefficient.СalculationLiftingForceCoefficient(GEO, T[11], VN[10], VN[30], L1PR);//вызов программы расчета аэродинамических характеристик
             VN[21] = AER[3];
             VN[22] = AER[8];
-            double[] AB4 = DU(GEO, T[11], VN[10], VN[30]);//вызов программы расчета характеристик силовой установки
+            double[] AB4 = DU(ref GEO, T[11], VN[10], VN[30]);//вызов программы расчета характеристик силовой установки
             VN[31] = AB4[4];
             VN[32] = AB4[5];
             if (LDATA)
