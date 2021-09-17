@@ -34,11 +34,11 @@ namespace PL_1
             //{
             //    Console.WriteLine(F[i]);
             //}
-            double[] T = TDifferentialSolver.Equation_dN(9);
-            for (int i = 0; i < 5; i++)
-            {
-                Console.WriteLine(T[i]);
-            }
+            //double[] T = TDifferentialSolver.Equation_dN(9);
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    Console.WriteLine(T[i]);
+            //}
 
             //TSystemResultDifferential R = TDifferentialSolver.Example_dN();
             //double[] BalanceRes = new double[6];
@@ -50,6 +50,15 @@ namespace PL_1
 
 
             //List<TPointSystemDifferential> P = R.SystemPoints;
+
+
+
+
+
+
+
+            var sergo = new TTrajectory();
+            sergo.SERG();
 
             Console.ReadKey();
         }

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aerodinamics\MathHelper\LinearyInterpolation\TLinearyInterpolation.cs" />
     <Compile Include="Aerodinamics\MathHelper\TDeterminationLiftingForceCoefficient.cs" />
     <Compile Include="Aerodinamics\MathHelper\TGeometricAerodynamicCharacteristics.cs" />
     <Compile Include="Aerodinamics\MathHelper\THelperMethods.cs" />
@@ -74,9 +75,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DifferentialEquations\TDifferentialSolver.cs" />
-    <Compile Include="Aerodinamics\MathHelper\LinearyInterpolation\TLinearyInterpolation.cs" />
     <Compile Include="Trajectory\MathHelper.cs" />
-    <Compile Include="Trajectory\PL.cs" />
     <Compile Include="Trajectory\Class4.cs" />
     <Compile Include="Trajectory\TTrajectory.cs" />
   </ItemGroup>
