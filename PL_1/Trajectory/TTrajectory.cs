@@ -586,7 +586,7 @@ namespace StandartHelperLibrary.MathHelper
             AB4[1] = A4;
             AB4[2] = B4;
             AB4[3] = C4;
-            double[] Atmosphere = HelperMethods.SP6B1(BB4[1], BB4[2], BB4[3], BB4[4], GEO[1]);
+            double[] Atmosphere = HelperMethods.SP6B1(BB4[1], BB4[2], BB4[3], BB4[4], AB4[1]);
 
             BB4[1] = Atmosphere[1];//1
             BB4[2] = Atmosphere[2];//2
